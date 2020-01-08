@@ -43,15 +43,15 @@ del Good
 print("Import successedfully")
 
 #%% Preprocessing
-### Create sequence
+#Create sequence
 vocabulary_size = 20000
 tokenizer = Tokenizer(num_words= vocabulary_size)
 tokenizer.fit_on_texts(X)
 sequences = tokenizer.texts_to_sequences(X)
 data = pad_sequences(sequences, maxlen=50)
-### One-Hot Label
+#One-Hot Label
 to_categorical(y, num_classes=2, dtype='float32')
-### Train, test split
+#Train, test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 #%% Model
@@ -65,4 +65,4 @@ model.add(Dense(2, activation='softmax'))
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-fit(X_train, y_train, batch_size=30, epochs=100, verbose=1, validation_data=(X_test, y_test), shuffle=True)
+model.fit(X_train, y_train, batch_size=30, epochs=100, verbose=1, validation_data=(X_test, y_test), shuffle=True)
