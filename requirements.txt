@@ -4,3 +4,4 @@ tensorflow
 numpy
 sklearn
 nltk
+gunicorn
