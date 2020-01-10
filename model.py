@@ -1,5 +1,5 @@
 #%%Import Lib
-from keras.preprocessing.text import Tokenizer
+from keras.preprocessing.text import Tokenizer, text_to_word_sequence
 from keras.preprocessing.sequence import pad_sequences
 from keras.layers import Dense, GRU, Flatten
 from keras.layers.embeddings import Embedding
@@ -41,10 +41,12 @@ print("Import successedfully")
 #%% Preprocessing
 #Create sequence
 vocabulary_size = 20000
-tokenizer = Tokenizer(num_words= vocabulary_size)
+for i in X:
+    i = text_to_word_sequence(i)
+tokenizer = Tokenizer(num_words=vocabulary_size, filters='!"#$%&()*+,./:;<=>?@[\\]^_`{|}~\t\n')
 tokenizer.fit_on_texts(X)
 sequences = tokenizer.texts_to_sequences(X)
-data = pad_sequences(sequences, maxlen=200)
+data = pad_sequences(sequences, maxlen=600)
 with open('tokenizer.pickle', 'wb') as handle:
     pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
 #One-Hot Label
@@ -54,13 +56,12 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 del X
 del data
 del y
-del sequences
 print("Preprocess successfully")
 
 #%% Model
 model = Sequential()
 ##Layer 1
-model.add(Embedding(input_dim=vocabulary_size, output_dim=16, input_length=200))
+model.add(Embedding(input_dim=vocabulary_size, output_dim=16, input_length=600))
 ##Layer 2
 model.add(GRU(10, activation='tanh', recurrent_activation='sigmoid', kernel_initializer='glorot_uniform', 
               recurrent_initializer='orthogonal', implementation=2, return_sequences=True, dropout=0.2, recurrent_dropout=0.2))
