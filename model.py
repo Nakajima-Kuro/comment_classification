@@ -60,9 +60,9 @@ print("Preprocess successfully")
 #%% Model
 model = Sequential()
 ##Layer 1
-model.add(Embedding(input_dim=vocabulary_size, output_dim=8, input_length=200))
+model.add(Embedding(input_dim=vocabulary_size, output_dim=16, input_length=200))
 ##Layer 2
-model.add(GRU(14, activation='tanh', recurrent_activation='sigmoid', kernel_initializer='glorot_uniform', 
+model.add(GRU(10, activation='tanh', recurrent_activation='sigmoid', kernel_initializer='glorot_uniform', 
               recurrent_initializer='orthogonal', implementation=2, return_sequences=True, dropout=0.2, recurrent_dropout=0.2))
 ##Layer 3
 model.add(Flatten())
@@ -75,4 +75,4 @@ model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy
 checkpoint = ModelCheckpoint('BestModel.hdf5', monitor = 'val_accuracy', verbose = 2, save_best_only = True, mode = 'max')
 callbacks_list = [checkpoint]
 
-model.fit(X_train, y_train, batch_size=30, epochs=100, verbose=1, validation_data=(X_test, y_test), shuffle=True, callbacks = callbacks_list)
+model.fit(X_train, y_train, batch_size=60, epochs=100, verbose=1, validation_data=(X_test, y_test), shuffle=True, callbacks = callbacks_list)
