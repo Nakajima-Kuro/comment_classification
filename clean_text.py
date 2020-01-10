@@ -1,4 +1,6 @@
 from nltk.corpus import stopwords
+# import nltk
+# nltk.download('stopwords')
 import string
 import re
 from nltk.stem import SnowballStemmer
